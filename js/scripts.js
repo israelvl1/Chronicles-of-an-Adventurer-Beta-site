@@ -54,7 +54,7 @@ class Particle {
 
 // Cria imagem de onde as partículas serão geradas
 const img = new Image();
-img.src = 'fundos/dinamic.png'; // Caminho da imagem
+img.src = 'https://israelvl1.github.io/Chronicles-of-an-Adventurer-Beta-site/fundos/dinamic.png'; // Caminho da imagem
 
 // Cria partículas com base na imagem carregada
 function createParticlesFromImage() {
