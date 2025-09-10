@@ -1,0 +1,28 @@
+@font-face {
+  font-family: familiar;
+  src: url(/fontes/Gold_and_After.ttf) format("truetype");
+}
+body {
+  margin: 0;
+  background: black;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  background: black;
+}
+.text {
+  font-family: "familiar", sans-serif;
+}
+#fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+  z-index: 9999;
+}
