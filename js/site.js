@@ -8,7 +8,7 @@ const blockOverlay = document.getElementById("blockOverlay");
 const blockOk = document.getElementById("blockOk");
 const caverna = document.getElementById("caverna");
 const menuToggle = document.querySelector(".menu-toggle");
-const navMenu = document.querySelector("nav ul");
+
 const navUl = document.querySelector("nav > ul");
 let typewriterTimeoutId; // variável global para guardar o ID do timeout
 let autoCloseTimeoutId; // guardamos o timeout do fechamento automático
@@ -176,7 +176,17 @@ document.getElementById("copyEmailBtn").addEventListener("click", function () {
     });
 });
 
+function checkMenu() {
+  if (window.innerWidth > 767) {
+    navUl.classList.add("show"); // abre o menu automaticamente
+  } else {
+    navUl.classList.remove("show"); // fecha o menu para telas menores
+  }
+}
+
+// Roda no carregamento da página
 document.addEventListener("DOMContentLoaded", () => {
+  checkMenu(); // garante que o menu esteja correto ao carregar
   const highlightDownload = () => {
     const platform = (navigator.platform || navigator.userAgent).toLowerCase();
 
@@ -198,11 +208,11 @@ document.addEventListener("DOMContentLoaded", () => {
   menuToggle.addEventListener("click", () => {
     navUl.classList.toggle("show");
 
-    // Recalcular posição da bolinha após exibir menu
+    // Reposiciona o indicador se tiver item ativo
     if (currentActiveItem) {
       setTimeout(() => {
         moveToItem(currentActiveItem);
-      }, 100); // aguarda o layout atualizar
+      }, 100);
     }
   });
 
@@ -283,3 +293,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100);
   }
 });
+window.addEventListener("resize", checkMenu);
