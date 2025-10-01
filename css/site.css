@@ -1,0 +1,1581 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* deixa crescer se o conteúdo for maior */
+  width: 100%; /* evita problemas com barra de rolagem */
+  overflow-x: hidden;
+
+  background-image: url("../capas/runas_direita.png"),
+    url("../capas/runas_esquerda.png");
+  background-position: right center, left center; /* ordem importa */
+  background-repeat: no-repeat, no-repeat;
+  background-size: 50% 100%, 50% 100%; /* divide a tela em duas metades */
+  padding-top: 100px; /* espaço pro header fixo */
+}
+html,
+body {
+  scroll-behavior: smooth;
+  scroll-padding-top: 30vh; /* altura real do header */
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  font-family: "Rokkitt", serif;
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 20px;
+  z-index: 1000;
+
+  /* Glassmorphism */
+  background: rgba(20, 20, 20, 0.65);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 215, 130, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+}
+
+#logo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  border: none;
+  background: transparent;
+}
+/* Botão hamburguer */
+.menu-toggle {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+}
+
+/* só anima a escala */
+@keyframes pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.3;
+  }
+}
+nav > ul {
+  position: relative;
+  list-style: none;
+  display: none; /* escondido no mobile */
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 10px;
+  height: 5rem;
+  text-align: center;
+  isolation: isolate;
+  padding: 0 1rem;
+  min-height: 3rem; /* ou mais, dependendo do tamanho do indicador */
+}
+nav > ul::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 10; /* não pode ser -1 senão some */
+  background: radial-gradient(
+    circle at center,
+    #fff 0%,
+    #ffd966 40%,
+    #ff8c00 100%
+  );
+  transform: translateX(var(--translate-x, 0)) translateY(var(--translate-y, 0))
+    rotate(var(--rotate-x, 0deg));
+  box-shadow: 0 0 8px rgba(255, 200, 100, 0.9), 0 0 20px rgba(255, 160, 0, 0.8),
+    0 0 35px rgba(255, 120, 0, 0.6);
+}
+/* LINKS */
+nav > ul li,
+nav > ul li a {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+nav > ul li a {
+  padding-inline: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+nav > ul li a:hover,
+nav > ul li a.active {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+nav > ul li a:focus {
+  outline: none;
+}
+
+nav > ul li a.active {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+nav > ul.show-indicator::after {
+  opacity: 1;
+}
+
+/* Quando o menu for aberto no mobile */
+nav > ul.show {
+  display: flex;
+  flex-direction: row; /* <-- lado a lado */
+  gap: 0.1rem; /* espaço entre os itens */
+  justify-content: center;
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* Garantir que o indicador se mova corretamente */
+}
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0turn;
+  inherits: false;
+}
+
+@keyframes gradient-angle {
+  0% {
+    --gradient-angle: 0turn;
+  }
+
+  100% {
+    --gradient-angle: 1turn;
+  }
+}
+
+.container {
+  margin: 150px auto 0 auto;
+  width: 50%;
+
+  max-height: 1400px; /* altura mínima garantida */
+  /* sem max-height! */
+
+  padding: 60px 40px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  color: whitesmoke;
+
+  background-image: linear-gradient(#221103, #a7531b),
+    conic-gradient(
+      from var(--gradient-angle),
+      #584827 0%,
+      #c7a03c 37%,
+      #f9de90 30%,
+      #c7a03c 33%,
+      #584827 40%,
+      #584827 50%,
+      #c7a03c 77%,
+      #f9de90 80%,
+      #c7a03c 83%,
+      #584827 90%
+    );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  /*border-left: 3px dashed red; /* limite esquerdo */
+  /*border-right: 3px dashed blue; /* limite direito */
+  animation: 4s gradient-angle infinite linear;
+  transition: max-height 0.8s ease, padding 0.8s ease;
+}
+.container.expandido {
+  max-height: 1900px;
+  padding-bottom: 100px; /* espaço extra */
+}
+
+#Cinzel,
+#Cardo {
+  font-family: "Cinzel", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  /* Peso 700 é negrito (bold) */
+  font-style: normal;
+}
+#home {
+  scroll-margin-top: 400px;
+}
+
+#titulo-game {
+  font-size: 2rem;
+  white-space: nowrap;
+}
+
+.secao-central {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 5%;
+}
+
+.secao-sobre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 40%;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+img {
+  max-width: 600px;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  color: whitesmoke;
+
+  background-image: linear-gradient(#492304, #a7531b),
+    conic-gradient(
+      from var(--gradient-angle),
+      #584827 0%,
+      #c7a03c 37%,
+      #f9de90 30%,
+      #c7a03c 33%,
+      #584827 40%,
+      #584827 50%,
+      #c7a03c 77%,
+      #f9de90 80%,
+      #c7a03c 83%,
+      #584827 90%
+    );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+
+  animation: 4s gradient-angle infinite linear;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.btn-medieval {
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Cinzel", serif; /* Fonte medieval, pode importar do Google Fonts */
+  color: #f5e6c5;
+  border-radius: 20px;
+  border: 2px solid transparent;
+
+  background-image: linear-gradient(#492304, #a7531b),
+    conic-gradient(
+      from var(--gradient-angle),
+      #584827 0%,
+      #c7a03c 37%,
+      #f9de90 30%,
+      #c7a03c 33%,
+      #584827 40%,
+      #584827 50%,
+      #c7a03c 77%,
+      #f9de90 80%,
+      #c7a03c 83%,
+      #584827 90%
+    );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+
+  animation: 2s gradient-angle infinite linear;
+  transition: transform 0.3s ease;
+  box-shadow: inset 0 1px 4px #000, 0 0 12px rgba(201, 163, 78, 0.6);
+  text-shadow: 1px 1px 2px #000;
+  cursor: pointer;
+}
+.btn-medieval:hover {
+  transform: scale(1.08);
+  transition: transform 0.2s ease-out;
+
+  background-image: linear-gradient(#caa746, #f9de90),
+    conic-gradient(
+      from var(--gradient-angle),
+      #584827 0%,
+      #ffd700 37%,
+      #fff4b0 50%,
+      #ffd700 77%,
+      #584827 100%
+    );
+
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 12px rgba(255, 255, 255, 0.6),
+    inset 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.btn-medieval:active {
+  transform: scale(0.97);
+  border-radius: 20px;
+  border: 2px solid transparent;
+
+  background-image: linear-gradient(#492304, #a7531b),
+    conic-gradient(
+      from var(--gradient-angle),
+      #584827 0%,
+      #c7a03c 37%,
+      #f9de90 30%,
+      #c7a03c 33%,
+      #584827 40%,
+      #584827 50%,
+      #c7a03c 77%,
+      #f9de90 80%,
+      #c7a03c 83%,
+      #584827 90%
+    );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  animation: 2s gradient-angle infinite linear;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  box-shadow: inset 0 1px 4px #000, 0 0 12px rgba(201, 163, 78, 0.6);
+}
+/* Fundo semi-transparente */
+/* Modal aparece embaixo do botão */
+.modal {
+  display: none;
+  margin-top: 18px;
+  background: transparent;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: flex-start;
+  opacity: 0;
+  transition: opacity 1s ease;
+  position: relative;
+}
+
+.modal.ativa {
+  display: block;
+  opacity: 1;
+}
+.modal-content.hide {
+  opacity: 0;
+}
+/* Caixa compacta estilo terminal */
+.modal-content {
+  position: relative;
+  padding: 24px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  width: 90%;
+  max-width: 550px;
+  max-height: 400px;
+  color: #a3e635; /* verde suave para leitura */
+  line-height: 1.6;
+  overflow: hidden;
+
+  background-image: linear-gradient(#000, #000),
+    conic-gradient(
+      from var(--gradient-angle),
+      #004d00 0%,
+      #3e8e41 30%,
+      #a4c639 37%,
+      #7bb661 40%,
+      #3e8e41 50%,
+      #a4c639 77%,
+      #d4f880 80%,
+      #a4c639 83%,
+      #004d00 90%
+    );
+
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  /* brilho mais suave para não cansar */
+  box-shadow: inset 0 1px 4px #000, 0 0 8px #00ff88, 0 0 16px #00ff88;
+
+  /* animação mais lenta para não distrair */
+  animation: gradient-angle 12s linear infinite;
+}
+/* este é quem controla o scroll */
+.modal-body {
+  padding: 24px;
+  color: #a3e635;
+  line-height: 1.6;
+  position: relative;
+  max-height: 300px; /* limite do body */
+  overflow-y: auto; /* Barra de rolagem fica aqui */
+  overflow-x: hidden;
+  scrollbar-gutter: stable; /* espaço reservado pro scrollbar */
+  margin-right: -20px; /* Empurra a barra pra fora */
+  padding-right: 27px; /* Garante espaço pro texto */
+  padding-top: 40px; /* Garante que o conteúdo não fique atrás do botão */
+}
+
+/* Barra de rolagem */
+.modal-body::-webkit-scrollbar {
+  width: 16px; /* Largura da barra de rolagem vertical */
+  background: #2c3e50;
+  border-radius: 10px;
+}
+
+/* Trilha (fundo) da barra de rolagem */
+.modal-body::-webkit-scrollbar-track {
+  background: linear-gradient(45deg, #34495e, #2c3e50);
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Thumb (parte arrastável) */
+.modal-body::-webkit-scrollbar-thumb {
+  background: #3498db; /* Cor do thumb */
+  border-radius: 10px;
+  border: 3px solid #ecf0f1; /* Borda branca */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efeito de hover no thumb */
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+  transform: scale(1.1); /* Aumenta o thumb */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Efeito de pressionar o thumb */
+.modal-body::-webkit-scrollbar-thumb:active {
+  background: #1abc9c;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+  transform: scale(1.2); /* Aumenta ainda mais */
+}
+#terminalOutput {
+  white-space: pre-line; /* Faz \n virar quebra de linha */
+}
+#closeBtn {
+  background: linear-gradient(
+    to bottom,
+    #7a1e1e,
+    #3d0b0b
+  ); /* vermelho queimado */
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #ff4d4d;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  padding: 2px 6px;
+  line-height: 1;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+  cursor: pointer;
+  font-family: monospace;
+  transition: all 0.2s ease;
+  position: absolute;
+  top: 13px;
+  right: 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#closeBtn:hover {
+  background-color: rgba(255, 0, 0, 1);
+  box-shadow: 0 0 12px #ff5555;
+}
+
+#closeBtn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
+}
+
+.input-line {
+  display: flex;
+  margin-top: 10px;
+}
+.input-line span {
+  margin-right: 5px;
+}
+input {
+  background: black;
+  border: none;
+  color: #0f0;
+  flex: 1;
+}
+input:focus {
+  outline: none;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+}
+.badge[data-type="status"] {
+  border-color: rgba(0, 255, 110, 0.4);
+  background: rgba(120, 255, 179, 0.08);
+  box-shadow: 0 0 10px rgba(0, 255, 110, 0.1), 0 0 20px rgba(0, 255, 110, 0.4),
+    0 0 40px rgba(0, 255, 110, 0.4);
+}
+article {
+  margin: auto;
+  padding: 32px 20px 80px;
+  color: white;
+}
+/* Grid sections */
+section {
+  margin-top: 28px;
+}
+.card {
+  width: 52%; /* ocupa toda a largura */
+  border-radius: 16px;
+  padding: 24px;
+  margin: 15px auto 0 auto;
+  background: rgba(
+    21,
+    25,
+    34,
+    0.85
+  ); /* cor sólida/translúcida, sem gradiente */
+  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.08); /* borda bem leve */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35); /* sombra para destacar do fundo */
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px); /* sobe levemente no hover */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); /* aumenta a sombra */
+}
+h2 {
+  font-size: clamp(20px, 3vw, 26px);
+  margin: 0 0 12px;
+}
+p {
+  margin: 0 0 10px;
+}
+.separator {
+  width: 80%;
+  height: 2px;
+  margin: 40px auto 0 auto;
+  background: linear-gradient(to right, transparent, #f9de90, transparent);
+  border-radius: 2px;
+}
+/* Cards em grid */
+.grid {
+  display: grid;
+  gap: 18px;
+}
+.grid.cols-2 {
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+}
+/* A partir de 820px, colunas com proporção personalizada */
+
+/* Cartões dentro da grid */
+.grid.cols-2 .card {
+  width: 100%; /* ocupa toda a coluna */
+  max-width: none; /* deixa o grid controlar o tamanho */
+  margin: 0; /* remove qualquer margem desnecessária */
+}
+
+.grid.cols-2 .card {
+  width: 60%; /* ocupa a coluna inteira */
+  max-width: 49%; /* mas não fica colado, dá respiro */
+  margin: 0 auto; /* centraliza dentro da coluna */
+}
+#mecanicas_card {
+  margin-left: 2px;
+}
+#historia_card {
+  margin-right: 2px;
+}
+.grid.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(280px, 1fr)); /* 2 colunas iguais */
+  gap: 20px; /* espaço entre as colunas */
+}
+
+.grid.cols-3 .card {
+  width: 100%; /* ocupa a coluna inteira */
+  max-width: 47%; /* mas não fica colado, dá respiro */
+  margin: 0 auto; /* centraliza dentro da coluna */
+}
+#aprendizados_card {
+  margin-left: -150px;
+}
+#ferramentas_card {
+  margin-right: -150px;
+}
+/** {
+  outline: 1px solid rgba(255, 0, 0, 0.3); /* opcional: mostra todos 
+}*/
+
+/*section,
+article,
+.card,
+.grid {
+  border-left: 2px dashed blue; /* limite esquerdo 
+  border-right: 2px dashed green; /* limite direito 
+}*/
+#blockOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none; /* escondido por padrão */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#blockBox {
+  background: #111;
+  border: 2px solid #0f0;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  color: #0f0;
+  box-shadow: 0 0 15px #0f0;
+}
+
+#blockOk {
+  background: linear-gradient(to bottom, #1e7a1e, #0b3d0b);
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #00cc66;
+  font-size: 16px;
+  padding: 2px 6px;
+  line-height: 1;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
+  cursor: pointer;
+  font-family: monospace;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#blockOk:hover {
+  background-color: rgba(0, 255, 0, 1);
+  box-shadow: 0 0 12px #00cc66;
+}
+
+#blockOk:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 4px rgba(0, 255, 0, 0.5);
+}
+
+footer {
+  background: #141414;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+
+.github {
+  text-decoration: none;
+  color: #ffffff;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+#sub {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.video-container {
+  position: relative;
+  margin: auto; /* Centraliza horizontalmente */
+
+  transform: translateY(
+    5%
+  ); /* Ajusta verticalmente para garantir que esteja centralizado */
+  width: 100%;
+  max-width: 600px;
+  align-items: center; /* Alinha verticalmente */
+  border: 10px solid transparent;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(255, 223, 0, 0.8), 0 0 25px rgba(255, 223, 0, 0.6); /* Efeito dourado */
+  background: radial-gradient(
+    circle,
+    rgba(255, 223, 0, 0.5),
+    rgba(0, 0, 0, 0.7)
+  ); /* Aura dourada */
+}
+
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.video-title {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 1.8rem;
+  color: #ffd700;
+  margin-bottom: 10px;
+  text-shadow: 0 0 8px rgba(255, 223, 0, 0.8);
+}
+
+.video-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+dot {
+  margin-bottom: 15px;
+}
+.highlight {
+  color: #ffd700; /* dourado chama atenção sem quebrar a paleta */
+  font-weight: bold;
+  font-style: italic;
+  display: block;
+  margin-top: 10px;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+.highlight1 {
+  color: #0099ff; /* dourado chama atenção sem quebrar a paleta */
+  font-weight: bold;
+  font-style: italic;
+  display: block;
+  margin-top: 10px;
+  text-shadow: 0 0 8px rgba(0, 255, 242, 0.6);
+}
+.highlight2 {
+  color: #00ff0d; /* dourado chama atenção sem quebrar a paleta */
+  font-weight: bold;
+  font-style: italic;
+  display: block;
+  margin-top: 10px;
+  text-shadow: 0 0 8px rgba(102, 255, 0, 0.6);
+}
+.confirm-email {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex; /* Flexbox para centralizar */
+  justify-content: center; /* Alinha no centro horizontalmente */
+  align-items: center; /* Alinha no centro verticalmente */
+  z-index: 9999;
+  display: none; /* Inicialmente escondido */
+}
+
+#feedback {
+  font-family: "Cinzel", serif;
+  background: #141414a6;
+  border: 2px solid #552c0b;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #221103;
+  animation: fadeIn 0.3s ease-out; /* Animação de fade-in */
+}
+
+/* Animação de fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.download-box {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(21, 25, 34, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.download-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.download-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.download-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.download-list li:last-child {
+  border-bottom: none;
+}
+
+.download-list span {
+  flex: 1;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  color: #fff;
+  transition: background 0.2s ease-in-out;
+}
+
+#btn-windows {
+  background: #0078d7;
+}
+#btn-windows:hover {
+  background: #005a9e;
+}
+
+#btn-macos {
+  background: #555555;
+}
+#btn-macos:hover {
+  background: #333333;
+}
+
+#btn-linux {
+  background: #2ecc71;
+}
+#btn-linux:hover {
+  background: #27ae60;
+}
+
+.extra-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.btn-github {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #24292e;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.btn-github:hover {
+  background: #000;
+}
+#bt-windows {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.highlight {
+  box-shadow: 0 0 8px rgba(0, 120, 215, 0.6);
+  transform: scale(1.05);
+}
+#Cinzel1 {
+  font-family: "Cinzel", serif;
+}
+@media (min-width: 768px) {
+  body {
+    background-image: url("../capas/runas_direita.png"); /* apenas a imagem da direita */
+    background-size: cover; /* melhor para fundo visualmente bonito */
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  img {
+    max-width: 80vh;
+  }
+  .container {
+    width: 80%;
+  }
+  #titulo-game {
+    font-size: 1.6rem;
+  }
+  #slogan-game {
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+  #card_sobre.card {
+    width: 80% !important;
+  }
+  .menu-toggle {
+    display: none; /* esconde o hamburguer */
+  }
+
+  html,
+  body {
+    scroll-behavior: smooth;
+    scroll-padding-top: 50vh; /* altura real do header */
+  }
+
+  #historia_card.card {
+    margin-top: 28px;
+    margin-left: 5px;
+  }
+
+  section {
+    margin-top: 28px;
+    width: 100%;
+    max-width: 100%;
+    display: flex; /* flex para facilitar alinhamento */
+    flex-direction: column; /* empilha itens */
+    align-items: center; /* centraliza horizontalmente */
+  }
+
+  .grid.cols-2 {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 coluna */
+    justify-items: center; /* centraliza os cards dentro da grid */
+    gap: 18px;
+    width: 80%;
+    max-width: none; /* limite máximo para o conteúdo */
+    padding: 0 10px;
+    margin: 0 auto;
+  }
+
+  .grid.cols-2 .card {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+  }
+  .download-box {
+    width: 500px;
+  }
+  .grid.cols-3 {
+    grid-template-columns: 1fr; /* 1 coluna só */
+  }
+
+  .grid.cols-3 .card {
+    max-width: 78%;
+    margin: 0 auto;
+  }
+  #aprendizados_card,
+  #desafios_card,
+  #ferramentas_card {
+    margin-left: 90px;
+  }
+  nav > ul::after {
+    bottom: -10px; /* Ajuste conforme necessário */
+  }
+}
+
+@media (min-width: 820px) {
+  .grid.cols-2 {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+
+  .grid.cols-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* três colunas iguais */
+    gap: 18px;
+    width: 100%;
+  }
+
+  .grid.cols-3 .card {
+    margin-top: 30px;
+    width: 100%;
+    height: 100%;
+  }
+
+  #desafios_card {
+    margin-left: 25px;
+  }
+  #aprendizados_card {
+    margin-left: -35px;
+  }
+
+  .grid .card {
+    max-width: none; /* ocupa o espaço da coluna */
+    margin: 0; /* remove centralização manual */
+  }
+  .grid.cols-2 .card {
+    width: 100%; /* ocupa toda a coluna */
+    height: 100%; /* mantém altura igual */
+  }
+  #historia_card.card {
+    margin-top: 60px;
+  }
+}
+@media (min-width: 1901px) {
+  #mecanicas_card.card {
+    margin-top: 60px;
+  }
+  .video-subtitle {
+    font-size: 22px;
+  }
+  img {
+    max-width: 100vh;
+  }
+  #titulo-game {
+    font-size: 3rem;
+    margin-top: -80px;
+  }
+  #slogan-game {
+    font-size: 1.9rem;
+    margin-top: 20px;
+  }
+  #ferramentas_card {
+    margin-left: 205px;
+  }
+  #desafios_card {
+    margin-left: 65px;
+  }
+  #aprendizados_card {
+    margin-left: -65px;
+  }
+}
+@media (min-width: 2000px) {
+  #mecanicas_card.card {
+    margin-top: 60px;
+  }
+  .video-subtitle {
+    font-size: 22px;
+  }
+  img {
+    max-width: 100vh;
+  }
+  #titulo-game {
+    font-size: 3rem;
+    margin-top: -80px;
+  }
+  #slogan-game {
+    font-size: 1.9rem;
+    margin-top: 20px;
+  }
+  #ferramentas_card {
+    margin-left: 215px;
+  }
+  #desafios_card {
+    margin-left: 75px;
+  }
+  #aprendizados_card {
+    margin-left: -65px;
+  }
+}
+
+@media (max-width: 1900px) {
+  #mecanicas_card.card {
+    margin-top: 60px;
+  }
+  .video-subtitle {
+    font-size: 22px;
+  }
+  img {
+    max-width: 100vh;
+  }
+  #titulo-game {
+    font-size: 3rem;
+    margin-top: -80px;
+  }
+  #slogan-game {
+    font-size: 1.9rem;
+    margin-top: 20px;
+  }
+  #ferramentas_card {
+    margin-left: 195px;
+  }
+  #desafios_card {
+    margin-left: 65px;
+  }
+  #aprendizados_card {
+    margin-left: -65px;
+  }
+}
+@media (max-width: 1800px) {
+  .video-subtitle {
+    font-size: 23px;
+  }
+  img {
+    max-width: 95vh;
+  }
+  #titulo-game {
+    font-size: 3rem;
+    margin-top: -60px;
+  }
+  #slogan-game {
+    font-size: 1.9rem;
+    margin-top: 20px;
+  }
+  #ferramentas_card {
+    margin-left: 195px;
+  }
+  #desafios_card {
+    margin-left: 65px;
+  }
+  #aprendizados_card {
+    margin-left: -65px;
+  }
+}
+@media (max-width: 1700px) {
+  .video-subtitle {
+    font-size: 22px;
+  }
+  #titulo-game {
+    font-size: 3rem;
+    margin-top: -60px;
+  }
+  #slogan-game {
+    font-size: 1.9rem;
+    margin-top: 20px;
+  }
+  #ferramentas_card {
+    margin-left: 185px;
+  }
+  #desafios_card {
+    margin-left: 60px;
+  }
+  #aprendizados_card {
+    margin-left: -65px;
+  }
+}
+@media (max-width: 1600px) {
+  img {
+    max-width: 120vh;
+  }
+  #titulo-game {
+    font-size: 3rem;
+  }
+  #slogan-game {
+    font-size: 1.9rem;
+    margin-top: 20px;
+  }
+  #ferramentas_card {
+    margin-left: 175px;
+  }
+  #desafios_card {
+    margin-left: 50px;
+  }
+}
+@media (max-width: 1500px) {
+  #mecanicas_card.card {
+    margin-top: 60px;
+  }
+  img {
+    max-width: 110vh;
+  }
+
+  #titulo-game {
+    font-size: 2.8rem;
+  }
+  #slogan-game {
+    font-size: 1.8rem;
+  }
+  #ferramentas_card {
+    margin-left: 165px;
+  }
+  #aprendizados_card {
+    margin-left: -55px;
+  }
+}
+@media (max-width: 1400px) {
+  #titulo-game {
+    font-size: 2.8rem;
+  }
+  #slogan-game {
+    font-size: 1.7rem;
+  }
+  #ferramentas_card {
+    margin-left: 155px;
+  }
+  img {
+    max-width: 100vh;
+  }
+  #aprendizados_card {
+    margin-left: -50px;
+  }
+}
+@media (max-width: 1300px) {
+  .video-subtitle {
+    font-size: 25px;
+  }
+
+  #titulo-game {
+    font-size: 2.5rem;
+  }
+  #slogan-game {
+    font-size: 1.6rem;
+  }
+  #ferramentas_card {
+    margin-left: 145px;
+  }
+  #desafios_card {
+    margin-left: 45px;
+  }
+}
+@media (max-width: 1200px) {
+  .video-subtitle {
+    font-size: 20px;
+  }
+  img {
+    max-width: 100vh;
+  }
+  #ferramentas_card {
+    margin-left: 135px;
+  }
+  #desafios_card {
+    margin-left: 40px;
+  }
+
+  #aprendizados_card {
+    margin-left: -50px;
+  }
+  #titulo-game {
+    font-size: 2.5rem;
+  }
+  #slogan-game {
+    font-size: 1.6rem;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 1100px) {
+  body {
+    background-image: url("../capas/runas_direita.png"); /* apenas a imagem da direita */
+    background-size: cover; /* melhor para fundo visualmente bonito */
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  .video-subtitle {
+    font-size: 20px;
+  }
+  img {
+    max-width: 90vh;
+  }
+  #ferramentas_card {
+    margin-left: 135px;
+  }
+  #desafios_card {
+    margin-left: 42px;
+  }
+  #titulo-game {
+    font-size: 2.2rem;
+  }
+  #slogan-game {
+    font-size: 1.6rem;
+    margin-top: 20px;
+  }
+}
+@media (max-width: 1000px) {
+  .video-subtitle {
+    font-size: 20px;
+  }
+  img {
+    max-width: 80vh;
+  }
+  #ferramentas_card {
+    margin-left: 115px;
+  }
+  #desafios_card {
+    margin-left: 40px;
+  }
+  #titulo-game {
+    font-size: 2rem;
+  }
+  #slogan-game {
+    font-size: 1.4rem;
+    margin-top: 20px;
+  }
+}
+@media (max-width: 900px) {
+  img {
+    max-width: 70vh;
+  }
+  #titulo-game {
+    font-size: 1.9rem;
+  }
+  #slogan-game {
+    font-size: 1.4rem;
+    margin-top: 20px;
+  }
+
+  .grid.cols-2 .card {
+    display: flex;
+    flex-direction: column; /* Alinha os elementos dentro da carta em coluna */
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .grid.cols-2 .card > * {
+    flex-grow: 1; /* Faz com que os filhos cresçam igualmente */
+  }
+
+  #mecanicas_card.card {
+    margin-top: 60px;
+  }
+  #ferramentas_card {
+    margin-left: 105px;
+  }
+  #desafios_card {
+    margin-left: 35px;
+  }
+}
+@media (max-width: 800px) {
+  img {
+    max-width: 65vh;
+  }
+}
+@media (min-width: 701px) and (max-width: 767px) {
+  body {
+    background-image: url("../capas/runas_direita.png"); /* apenas a imagem da direita */
+    background-size: cover; /* melhor para fundo visualmente bonito */
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  .container {
+    width: 90%;
+    align-items: center;
+  }
+  img {
+    max-width: 60vh;
+  }
+  section {
+    margin-top: 28px;
+    width: 100%;
+    max-width: 100%;
+    display: flex; /* precisa disso */
+    flex-direction: column; /* empilha os itens */
+    align-items: center; /* centraliza horizontalmente */
+  }
+  .video-subtitle {
+    font-size: 20px;
+  }
+  .grid.cols-2 {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 coluna */
+    justify-items: center; /* centraliza os cards dentro da grid */
+    gap: 18px;
+    max-width: none; /* limite máximo para o conteúdo */
+    padding: 0 10px;
+    margin: 0 auto;
+  }
+
+  .grid.cols-2 .card {
+    width: 82%;
+    max-width: none;
+    margin: 0 auto;
+  }
+  .grid.cols-3 {
+    grid-template-columns: 1fr; /* 1 coluna só */
+  }
+
+  .grid.cols-3 .card {
+    max-width: 79%;
+    margin: 0 auto;
+  }
+  #card_sobre.card {
+    width: 80% !important;
+  }
+  #mecanicas_card.card {
+    margin-left: 60px;
+  }
+  #historia_card.card {
+    margin-top: 28px;
+    margin-left: 5px;
+  }
+  #aprendizados_card,
+  #desafios_card,
+  #ferramentas_card {
+    margin-left: 65px;
+  }
+  .download-box {
+    width: 500px;
+  }
+}
+@media (max-width: 700px) {
+  body {
+    background-image: url("../capas/runas_direita.png"); /* apenas a imagem da direita */
+    background-size: cover; /* melhor para fundo visualmente bonito */
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  img {
+    max-width: 55vh;
+  }
+  .container {
+    width: 80%;
+    align-items: center;
+  }
+  #titulo-game {
+    font-size: 1.5rem;
+  }
+  #slogan-game {
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+  #card_sobre.card {
+    width: 80% !important;
+  }
+  #mecanicas_card.card {
+    margin-left: 60px;
+  }
+  #historia_card.card {
+    margin-top: 28px;
+    margin-left: 5px;
+  }
+  section {
+    margin-top: 28px;
+    width: 100%;
+    max-width: 100%;
+    display: flex; /* flex para facilitar alinhamento */
+    flex-direction: column; /* empilha itens */
+    align-items: center; /* centraliza horizontalmente */
+  }
+
+  .grid.cols-2 {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 coluna */
+    justify-items: center; /* centraliza os cards dentro da grid */
+    gap: 18px;
+    max-width: none; /* limite máximo para o conteúdo */
+    padding: 0 10px;
+    margin: 0 auto;
+  }
+
+  .grid.cols-2 .card {
+    width: 82%;
+    max-width: none;
+    margin: 0 auto;
+  }
+  .grid.cols-3 {
+    grid-template-columns: 1fr; /* 1 coluna só */
+  }
+
+  .grid.cols-3 .card {
+    max-width: 79%;
+    margin: 0 auto;
+  }
+  #aprendizados_card,
+  #desafios_card,
+  #ferramentas_card {
+    margin-left: 65px;
+  }
+  .download-box {
+    width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  #titulo-game {
+    font-size: 1.45rem;
+  }
+  img {
+    max-width: 50vh;
+  }
+  #slogan-game {
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+
+  #mecanicas_card.card {
+    margin-left: 55px;
+  }
+  #historia_card.card {
+    margin-top: 28px;
+    margin-left: 5px;
+  }
+
+  #aprendizados_card,
+  #desafios_card,
+  #ferramentas_card {
+    margin-left: 65px;
+  }
+  #ferramentas {
+    font-size: 1rem;
+  }
+  #desafios {
+    font-size: 1rem;
+  }
+  #aprendizados {
+    font-size: 1rem;
+  }
+  .download-box {
+    width: 500px;
+  }
+}
+@media (max-width: 500px) {
+  #mecanicas_card.card {
+    margin-left: 45px;
+  }
+  #aprendizados_card,
+  #desafios_card,
+  #ferramentas_card {
+    margin-left: 55px;
+  }
+  img {
+    max-width: 40vh;
+  }
+  #titulo-game {
+    font-size: 0.8rem;
+  }
+  #slogan-game {
+    font-size: 0.7rem;
+    margin-top: 20px;
+  }
+}
+@media (max-width: 480px) {
+  img {
+    max-width: 35vh;
+  }
+  #titulo-game {
+    font-size: 1rem;
+  }
+  #slogan-game {
+    font-size: 0.7rem;
+    margin-top: 20px;
+  }
+  header {
+    width: 100%;
+    left: 50%;
+    max-width: 450px;
+  }
+  #mecanicas_card.card {
+    margin-left: 45px;
+  }
+  .grid.cols-3 .card {
+    max-width: 77%;
+    margin: 0 auto;
+  }
+
+  #aprendizados_card,
+  #desafios_card,
+  #ferramentas_card {
+    margin-left: 60px;
+  }
+}
