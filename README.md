@@ -56,7 +56,6 @@ A página oferece uma experiência visual envolvente e dinâmica, com:
 - Desenvolvido por SoloDev Israel.
 - Sinta-se à vontade para usar este projeto como base para seus próprios estudos e criações.
 
-## 🔗 Contato e Portfólio
+## 🔗 Portfólio
 
 - Portfólio: https://israelvl1.github.io/Chronicles-of-an-Adventurer-Beta-site
-- E-mail: israelvilela06@gmail.com
